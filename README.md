@@ -1,5 +1,6 @@
-# redblacktreeusing System;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,31 +13,84 @@ namespace ConsoleApplication24
         {
             node n = new node();
             tree a = new tree();
-            a.add_node(4);
-            a.add_node(7);
-            a.add_node(12);
-            a.add_node(15);
-            a.add_node(3);
-            a.add_node(5);
-            a.add_node(14);
-            a.add_node(18);
-            a.add_node(16);
-            a.add_node(17);
-            
-            //a.add_node(20);
-            //a.add_node(25);
-            //a.add_node(35);
-            //a.add_node(30);
-            a.addnill();
-            Console.WriteLine("\ninorder");
-            a.inorder(n);
-            
-            a.deletionBST(12);
-            Console.WriteLine();
-            a.inorder(n);
-            //a.deletionBST(35);
+            //a.add_node(4);
+            //a.add_node(7);
+            //a.add_node(12);
+            //a.add_node(15);
+            //a.add_node(3);
+            //a.add_node(5);
+            //a.add_node(14);
+            //a.add_node(18);
+            //a.add_node(16);
+            //a.add_node(17);
+            //List<double> b = new List<double>();
+            //a.ConvertTreeToList(a, b);
+            // List<double> c = new List<double>();
+            //double[] b =new double[] { };
+            //string str;
+            double[] arr = new double[5];
+            using (StreamReader sr = new StreamReader("C:\\Users\\HP-15\\Desktop\\redblack.txt"))
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    arr[i] = Convert.ToDouble(sr.ReadLine());
+                    a.add_node(arr[i]);
+                }
+                
+            }
+            //for (int i = 0; i < str.Length; i++)
+            //{
+
+
+                //Convert.ToDouble(str[i]);
+                // b[]
+            //    b[i] = double.Parse(str[i]);
+            //}
+            //Console.WriteLine("Red Black tree");
+            //Console.WriteLine("The input is :");
+
             //Console.WriteLine();
-            //a.inorder(n);
+            ////a.inorder();
+            //for (int i = 0; i < b.Length ; i++)
+            //{
+            //    Console.WriteLine(b[i]);
+            //}
+            //start:
+            //Console.WriteLine("1. Add\n2. Delete\n3. Find\n4. Traverse");
+            //char s = Console.ReadKey().KeyChar;
+            //switch(s)
+            //{
+            //    case '1':
+            //        double ff =Convert.ToDouble(Console.ReadLine());
+            //        a.add_node(ff);
+            //        break;
+            //    case '2':
+            //        a.deletionRBT(Convert.ToDouble(Console.ReadLine()));
+            //        break;
+            //    case '3':
+            //        a.Findnum(Convert.ToDouble(Console.ReadLine()));
+            //        break;
+            //    case '4':
+            //        Console.WriteLine();
+            //        a.inorder();
+            //        break;
+            //    default:
+            //        goto start;
+            //        break;
+            //}
+            //a.add_node(1);
+            //a.add_node(2);
+            //a.add_node(3);
+            //a.add_node(4);
+            //a.add_node(5);
+
+            Console.WriteLine("\ninorder");
+            a.inorder();
+            
+            //a.deletionRBT(16);
+            //Console.WriteLine();
+            //a.inorder();
+            
             Console.ReadLine();
         }
     }
@@ -123,7 +177,17 @@ namespace ConsoleApplication24
 
                 balancing(x, n);
                 head.color = "black";
-
+                removenil();
+                //List<double> a = new List<double>();
+                //node t = head;
+                //ConvertTreeToList(t, a);
+                //using (StreamWriter sr = new StreamWriter(@"\\C:\\Users\\HP-15\\Desktop\\redblack.txt"))
+                //{
+                //    foreach (double aaa in a)
+                //    {
+                //        sr.WriteLine(aaa);
+                //    }
+                //}
             }
         }
         public void balancing(double x, node n)
@@ -165,6 +229,7 @@ namespace ConsoleApplication24
                         }
                         else if (par.color == "red" && gp.left.color == "black")
                         {
+                            
                             rotate_R(n, par, gp.left, gp);
 
                         }
@@ -318,19 +383,11 @@ namespace ConsoleApplication24
             }
         }
 
+        
 
-
-
-
-
-
-
-
-
-
-        public void inorder(node n)
+        public void inorder()
         {
-            n = head;
+            node n = head;
             inorder_h(n);
         }
         public void inorder_h(node n)
@@ -340,7 +397,7 @@ namespace ConsoleApplication24
             {
                 inorder_h(n.left); //nil.value = -2938.34738;
                                    //if (n.value != -2938.34738) { Console.Write(" " + n.value + n.color); }
-                Console.Write(" " + n.value);
+                Console.Write(" " + n.value + n.color);
                 inorder_h(n.right);
             }
         }
@@ -412,6 +469,12 @@ namespace ConsoleApplication24
             }
 
         }
+        public double  Findnum(double v)
+        {
+            node t = head;
+           node   d=Find(t, v);
+            return d.value;
+        }
         public node Find(node n, double val)
         {
             if (n == null || n.value == val)
@@ -428,62 +491,22 @@ namespace ConsoleApplication24
         {
             b = a;
         }
-        
-        public bool deletionBST(double val)
+      
+        public static void ConvertTreeToList(node root, List<double> result)
         {
-            node t = head;
-            bool d = deleteBST(t, val);
-            return d;
-
-        }
-        
-        public void Case1(node c)
-        {
-            if (c == head)
+            if (root == null)
             {
-                c.color = "black";
+                return;
             }
+
+
+            ConvertTreeToList(root.left, result);
+            result.Add(root.value);
+            ConvertTreeToList(root.right, result);
         }
-        public void Case2(node c)
-        {
-            node p = c.right;
-            c.right = c.right.left;
-            p.left = c;
-            p.color = "black";
-            c.color = "red";
-        }
-        public void Case3(node c)
-        {
-            c.color = "DB";
-            c.right.color = "red";
-        }
-        public void Case4(node c)
-        {
-            c.color = "black";
-            c.left.color = "black";
-            c.right.color = "red";
-        }
-        public void Case5(node c)
-        {
-            node S = c.right;
-            c.right = S.left;
-            c.right.right = S;
-            S.left = null;
-            c.color = "P";
-            c.right.color = "black";
-            S.color = "red";
-        }
-        public void Case6(node c)
-        {
-            node p = c.right;
-            c.right = c.right.left;
-            p.left = c;
-            c.color = "black";
-            c.left.color = "black";
-            p.color = "P";
-            c.right.color = "P";
-            p.right.color = "black";
-        }
+
+
+        
         public void addnill()
         {
             node m = head;
@@ -491,49 +514,55 @@ namespace ConsoleApplication24
             nil.value = -2938.34738;
             nil.color = "black";
 
-            add_nill_node(m,nil);
+            add_nill_node(m);
         }
-        public void add_nill_node(node x,node nil)
+        public void add_nill_node(node x)
         {
-            
             if (x == nil || x.value == -2938.34738)
             {
                 return;
             }
-                if (x.left == null && x.right == null)
+                if (x.left == null && x.left != nil && x.right == null && x.right != nil)
             {
                 x.left = nil;
                 x.right = nil;
                 
             }
-            else if (x.left == null)
+            else if (x.left == null && x.left != nil )
             {
                 x.left = nil;
 
             }
-            else if (x.right == null)
+            else if (x.right == null && x.right != nil)
             {
                 x.right = nil;
             }
-            add_nill_node(x.left,nil);
-            add_nill_node(x.right,nil);
+            add_nill_node(x.left);
+            add_nill_node(x.right);
             return;
         }
-        //public bool blackheight(node x)
-        //{
-        //    if (x == null)
-        //    {
-               
-        //    }
-        //    else
-        //    {
-                
-        //    }
-        //}
-        public bool deleteBST(node x, double val)
+        public bool deletionRBT(double val)
+        {
+            node t = head;
+            addnill();
+            bool d = deleteRBT(t, val);
+            removenil();
+            //List<double> a = new List<double>();
+            //ConvertTreeToList(t, a);
+            //using (StreamWriter sr = new StreamWriter(@"C:\\Users\\HP-15\\Desktop.txt"))
+            //{
+            //    foreach (double n in a)
+            //    {
+            //        sr.WriteLine(n);
+            //    }
+            //}
+            return d;
+
+        }
+        public bool deleteRBT(node x, double val)
         {
             node f = Find(x, val);
-            addnill();
+            //addnill();
             if (f == null || f.value == -2938.34738)
                 return false;
             //if(x.value == )
@@ -556,7 +585,7 @@ namespace ConsoleApplication24
                         {
                             DuplicateRef(ref m.value, ref f.value);
                             val = m.value;
-                            return deleteBST(f.right, val);
+                            return deleteRBT(f.right, val);
 
                             //if (f.value == head.value)
                            //{
@@ -567,19 +596,19 @@ namespace ConsoleApplication24
                         {
                             DuplicateRef(ref m.value, ref f.value);
                             val = m.value;
-                            return deleteBST(f.right, val);
+                            return deleteRBT(f.right, val);
                         }
                         if (f.color == "black" && m.color == "red")
                         {
                             DuplicateRef(ref m.value, ref f.value);
                             val = m.value;
-                            return deleteBST(f, val);
+                            return deleteRBT(f.right, val);
                         }
                         if (f.color == "red" && m.color == "black")
                         {
                             DuplicateRef(ref m.value, ref f.value);
                             val = m.value;
-                            return deleteBST(f, val);
+                            return deleteRBT(f, val);
                         }
 
                     }
@@ -633,6 +662,7 @@ namespace ConsoleApplication24
                             if (x.right.value == f.value && x.right.color == "black")
                             {
                                 x.right.color = "DB";
+                                x.right.value = 0;
                                 Casematch_R(x);
                                 addnill();
                             }
@@ -670,20 +700,20 @@ namespace ConsoleApplication24
                             val = m.value;
                             if (f.value == head.value)
                             {
-                                return deleteBST(f.right, val);
+                                return deleteRBT(f.right, val);
                             }
                         }
                         if (f.color == "black" && m.color == "red")
                         {
                             DuplicateRef(ref m.value, ref f.value);
                             val = m.value;
-                            return deleteBST(f, val);
+                            return deleteRBT(f, val);
                         }
                         if (f.color == "red" && m.color == "black")
                         {
                             DuplicateRef(ref m.value, ref f.value);
                             val = m.value;
-                            return deleteBST(f, val);
+                            return deleteRBT(f, val);
                         }
                     }
                     if (x.left.right != null && x.left.right.value != -2938.34738)
@@ -737,11 +767,11 @@ namespace ConsoleApplication24
             }
             if (x.value < val)
             {
-                return deleteBST(x.right, val);
+                return deleteRBT(x.right, val);
             }
             if (x.value > val)
             {
-                return deleteBST(x.left, val);
+                return deleteRBT(x.left, val);
             }
             return false;
         }
@@ -749,11 +779,16 @@ namespace ConsoleApplication24
         
         public void Casematch_L(node x)
         {
+            if (x == head) //CASE I 
+            {
+                x.color = "black";
+            }
             if (x.color == "black")
             {
+                //CASE II
                 if (x.right.color == "red" && x.left.color == "DB")
                 {
-                    if (x.right.right.color == "black" || x.right.right == null && x.right.left.color == "black" || x.right.left == null)
+                    if (x.right.right.color == "black"  && x.right.left.color == "black" )
                     {
                         node gp = search_parent(x.value, x);
                         node S = x.right;
@@ -772,33 +807,55 @@ namespace ConsoleApplication24
                                 gp.left = S;
                             }
                         }
-                        addnill();
+
+                        //addnill();
                         Casematch_L(x);
                         
                         return;
                     }
                 }
+                //CASE III
                 if (x.right.color == "black" && x.left.color == "DB")
                 {
-                    if (x.right.right.color == "black" || x.right.right == null && x.right.left.color == "black" || x.right.left == null)
+                    if (x.right.right.color == "black" && x.right.left.color == "black" )
                     {
                         x.color = "DB";
                         x.right.color = "red";
-                        addnill();
-                        Casematch_L(x);
+                        x.left = nil;
+                        
+                        //addnill();
+                        node gp = search_parent(x.value, x);
+                        if (gp != null)
+                        {
+                            if (gp.right.color == "DB")
+                            {
+                                Casematch_R(gp);
+                            }
+                            else
+                            {
+                                Casematch_L(gp);
+                            }
+                        }
+                        else
+                        {
+
+                            Casematch_L(x);
+                        }
+                            
+                        
                         return;
                     }
                     
                 }
             }
-            if (x.color == "red")
+            if (x.color == "red") //CASE IV
             {
                 if (x.right.color == "black" && x.left.color == "DB")
                 {
                     if (x.right.right.color == "black"  && x.right.left.color == "black" )
                     {
                         x.color = "black";
-                        x.left.color = "black";
+                        x.left = nil;
                         x.right.color = "red";
                         return;
                     }
@@ -808,19 +865,30 @@ namespace ConsoleApplication24
             {
                 if (x.left.color == "DB" && x.right.color == "black")
                 {
+                    //CASE V
                     if (x.right.left.color == "red" && x.right.right.color == "black" || x.right.right == null)
                     {
-                        node S = x.right;
-                        x.right = S.left;
-                        x.right.right = S;
-                        S.left = null;
-                        //x.color = "P";
-                        x.right.color = "black";
-                        S.color = "red";
-                        addnill();
+                        //if (x == head)
+                        //{
+                            node S = x.right;
+                            node xleft = S.left.right;
+                            x.right = S.left;
+                            x.right.right = S;
+                            S.left = xleft;
+                            //x.color = "P";
+                            x.right.color = "black";
+                            S.color = "red";
+                        // }
+                        //else
+                        //{
+
+                        //}
+                        
+                        //addnill();
                         Casematch_L(x);
                         return;
                     }
+                    //CASE VI
                     if (x.right.right.color == "red" && x.right.left.color == "black" || x.right.left.color == "red" || x.right.left == null)
                     {
                         node gp = search_parent(x.value, x);
@@ -855,13 +923,48 @@ namespace ConsoleApplication24
                 }
             }
         }
+        public void removenil() //Remove nill nodes
+        {
+            node t = head;
+            remove_nill(t);
+        }
+        public void remove_nill(node x)
+        {
+            if (x == null)
+            {
+                return;
+            }
+            if (x.right != null)
+            {
+                if (x.right.value == -2938.34738 )
+                {
+                    x.right = null;
+                }
+            }
+            if (x.left != null)
+            {
+                if (x.left.value == -2938.34738 )
+                {
+                    x.left = null;
+                }
+            }
+            
+            remove_nill(x.left);
+            //Console.WriteLine(x.value);
+            remove_nill(x.right);
+            return;
+        }
         public void Casematch_R(node x)
         {
-            if (x.color == "black")
+            if (x == head) //CASE I 
             {
-                if (x.right.color == "DB" && x.left.color == "red")
+                x.color = "black";
+            }
+            if (x.color == "black") 
+            {
+                if (x.right.color == "DB" && x.left.color == "red") //CASE II
                 {
-                    if (x.left.left.color == "black" || x.left.left == null && x.left.right.color == "black" || x.left.right == null)
+                    if (x.left.left.color == "black"  && x.left.right.color == "black" )
                     {
                         node gp = search_parent(x.value, x);
                         node S = x.left;
@@ -886,24 +989,41 @@ namespace ConsoleApplication24
 
                     }
                 }
-                if (x.right.color == "DB" && x.left.color == "black")
+                if (x.right.color == "DB" && x.left.color == "black") //CASE III
                 {
-                    if (x.left.left.color == "black" || x.left.left == null && x.left.right.color == "black" || x.left.right == null)
+                    if (x.left.left.color == "black"  && x.left.right.color == "black" )
                     {
                         x.color = "DB";
                         x.left.color = "red";
-                        addnill();
-                        Casematch_R(x);
+                        x.right.color = "black";
+                        //addnill();
+                        node gp = search_parent(x.value, x);
+                        if (gp != null)
+                        {
+                            if (gp.right.color == "DB")
+                            {
+                                Casematch_R(gp);
+                            }
+                            else
+                            {
+                                Casematch_L(gp);
+                            }
+                        }
+                        else
+                        {
+
+                            Casematch_R(x);
+                        }
                         return;
                     }
 
                 }
             }
-            if (x.color == "red")
+            if (x.color == "red") //CASE IV
             {
                 if (x.right.color == "DB" && x.left.color == "black")
                 {
-                    if (x.left.right.color == "black" && x.left.right == nil  && x.left.left.color == "black" && x.left.left != nil)
+                    if (x.left.right.color == "black" || x.left.right == nil  && x.left.left.color == "black" || x.left.left == nil)
                     {
                         x.color = "black";
                         x.right.color = "black";
@@ -916,22 +1036,43 @@ namespace ConsoleApplication24
             }
             if (x.color == "red" || x.color == "black")
             {
-                if (x.left.color == "black" && x.right.color == "DB")
+                if (x.left.color == "black" && x.right.color == "DB") //CASE V
                 {
-                    if (x.left.left.color == "red" && x.left.right.color == "black" || x.left.right == null)
+                    if (x.left.left.color == "red" && x.left.right.color == "black" )
                     {
-                        node S = x.left;
-                        x.left = S.right;
-                        x.left.left = S;
-                        S.right = null;
-                        //x.color = "P";
-                        x.left.color = "black";
-                        S.color = "red";
-                        S.left.color = "black";
+                        //if (x == head)
+                        //{
+                            node S = x.left;
+                            node xright = S.right.left;
+                            x.left = S.right;
+                            x.left.left = S;
+                            S.right = xright;
+                            //x.color = "P";
+                            x.left.color = "black";
+                            S.color = "red";
+                           
+                            S.left.color = "black";
+                        //addnill();
+                        //}
+                        //else
+                        //{
+                        //    node S = x.left;
+                        //    node xright = S.right.left;
+                        //    x.left = S.right;
+                        //    x.left.left = S;
+                        //    S.right = xright;
+                        //    //x.color = "P";
+                        //    x.left.color = "black";
+                        //    S.color = "red";
+                        //    S.left.color = "black";
+                        //    //addnill();
+                        //}
+
                         addnill();
                         Casematch_R(x); 
                         return;
                     }
+                    //CASE VI
                     if (x.left.right.color == "red" &&x.left.right !=nil && x.left.left != nil && x.left.left.color == "black" || x.left.left.color == "red" || x.left.left == null)
                     {
                         node gp = search_parent(x.value, x);
@@ -960,12 +1101,12 @@ namespace ConsoleApplication24
                             S.color = "black";
                             head = S;
                         }
+                        addnill();
                         return;
                     }
                 }
             }
         }
-
     }
 }
 
